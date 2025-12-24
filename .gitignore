@@ -1,5 +1,15 @@
-.cache
-.vscode
-venv
-my_raw_songs.json
+# Python system files
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
 .env
+
+# User data (Privacy)
+my_raw_songs.json
+my_refined_songs.json
+
+# IDE settings
+.cache
+.vscode/

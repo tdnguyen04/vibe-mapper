@@ -88,12 +88,13 @@ def refine_data():
     print("⚗️ Starting Refinery...")
     
     processed_songs = []
+    fetched_songs = []
     # 1. Load 'my_raw_songs.json' (Don't forget encoding='utf-8'!)
     with open("my_raw_songs.json", "r", encoding="utf-8") as file:
-        processed_songs = json.load(file)
+        fetched_songs = json.load(file)
     
-    print(processed_songs[:5])
-    print(calculate_vibe(get_lastfm_tags(artist=processed_songs[0]["artist"], track=processed_songs[0]["name"])))
+    print(fetched_songs[:5])
+    print(calculate_vibe(get_lastfm_tags(artist=fetched_songs[0]["artist"], track=fetched_songs[0]["name"])))
 
     
     # 2. Loop through every song in the loaded data
@@ -101,12 +102,23 @@ def refine_data():
     #    b. Call calculate_vibe()
     #    c. Add the new data to the song dictionary
     #    d. Append to processed_songs list
-    # ... WRITE YOUR CODE HERE ...
+    for song in fetched_songs:
+        tags = get_lastfm_tags(artist=song["artist"], track=song["name"])
+        vibe = calculate_vibe(tags)
+        if vibe == None:
+            vibe = (0.5, 0.5)
+        song["tags"] = {
+            "energy": vibe[0],
+            "valence": vibe[1]
+        }
+        processed_songs.append(song)
+        
 
     # 3. Save the result to 'my_refined_songs.json'
-    # ... WRITE YOUR CODE HERE ...
+    with open("my_refined_songs.json", "w", encoding="utf-8") as file:
+        json.dump(processed_songs, file, indent=2)
     
-    # print("Done!")
+    print("Done!")
 
 if __name__ == "__main__":
     refine_data()
